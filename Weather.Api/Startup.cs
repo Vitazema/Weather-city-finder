@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Weather.Api.Services;
 using Weather.Data;
@@ -30,12 +27,11 @@ namespace Weather.Api
       var mySqlConnectionString = Configuration.GetConnectionString("WeatherConnection");
 
       services.AddDbContext<WeatherDbContext>(opt =>opt
-        .UseMySql(mySqlConnectionString, ServerVersion.AutoDetect(mySqlConnectionString), options => options.MaxBatchSize(100))
-        .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Name }, LogLevel.Information)
-        .LogTo(log => Debug.WriteLine(log), LogLevel.Information)
+        .UseMySql(mySqlConnectionString)
         .EnableSensitiveDataLogging()
         );
       services.AddHostedService<WeatherService>();
+      services.AddHttpClient();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

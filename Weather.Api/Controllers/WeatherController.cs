@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Weather.Data;
 using Weather.Domain;
 
@@ -11,7 +12,6 @@ namespace Weather.Api.Controllers
   [Route("api/[controller]")]
   public class WeatherController : ControllerBase
   {
-
     private readonly WeatherDbContext _context;
 
     public WeatherController(WeatherDbContext context)
@@ -21,12 +21,12 @@ namespace Weather.Api.Controllers
 
     // GET: api/weather/city
     [HttpGet("city/{cityName}")]
-    public async Task<ActionResult<IEnumerable<Temperature>>> GetWeatherByCityName(string cityName)
+    public async Task<List<Temperature>> GetWeatherByCityName(string cityName)
     {
-      var temperatures = await _context.GetWeatherByCityNameAsync(cityName);
-      if (temperatures == null)
-        return NotFound();
-      return temperatures;
+      return await _context.Temperatures
+        .Where(t => t.City.Name == cityName)
+        .OrderBy(t => t.Date)
+        .ToListAsync();
     }
   }
 }

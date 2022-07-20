@@ -1,3 +1,4 @@
+﻿using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -7,6 +8,9 @@ namespace Weather.Api
   {
     public static void Main(string[] args)
     {
+      // Настройка кодировки вывода в консоль
+      Console.OutputEncoding = System.Text.Encoding.UTF8;
+
       CreateHostBuilder(args).Build().Run();
     }
 
