@@ -1,2 +1,2 @@
 # Weather-city-finder
-Прогноз подгоды по выбранным городам от OpenWeatherMAP.
+Weather forecast PET project app based on OpenWeatherMAP.
